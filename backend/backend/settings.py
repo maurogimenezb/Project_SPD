@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mzfkz%+ms0+t!!+og2tox%46v_ovfehq-wq1s!o#virf@^o#0w'
+SECRET_KEY = 'django-insecure-_eq=09mhz-5ik49xz!^j#=7f6_616ws+r*$y3qa5s!d5upw1s('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    # Se agrego por conflictos de política de seguridad de origen que bloquea la 
+    #solicitud debido a diferencias en el origen (origen cruzado).
+
 ]
 
 MIDDLEWARE = [
@@ -47,6 +51,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    
+    # Se agrego por conflictos de política de seguridad de origen que bloquea la 
+    #solicitud debido a diferencias en el origen (origen cruzado).
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -121,3 +130,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Se agrego por conflictos de política de seguridad de origen que bloquea la 
+#solicitud debido a diferencias en el origen (origen cruzado).
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000"
+]

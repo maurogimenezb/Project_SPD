@@ -1,17 +1,17 @@
+// Importa las bibliotecas y componentes necesarios
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Importa la biblioteca Axios para realizar solicitudes HTTP
+import axios from 'axios'; // Para realizar solicitudes HTTP
 import './App.css';
-import { ReactMic } from 'react-mic'; // Importa el componente de grabación de audio
+import { ReactMic } from 'react-mic'; // Componente para grabar audio
+import Button from '@mui/material/Button'; // Componente de botón de Material-UI
+import CircularProgress from '@mui/material/CircularProgress'; // Componente de carga de Material-UI
 
 function App() {
-  // Estado para almacenar la transcripción de audio
-  const [transcript, setTranscript] = useState('');
-  // Estado para controlar si la transcripción está en proceso
-  const [transcribing, setTranscribing] = useState(false);
-  // Estado para controlar si se está grabando audio
-  const [isRecording, setIsRecording] = useState(false);
-  // Estado para almacenar la URL del audio grabado
-  const [recordedBlobURL, setRecordedBlobURL] = useState(null);
+  // Estados para almacenar información y controlar la aplicación
+  const [transcript, setTranscript] = useState(''); // Para la transcripción de audio
+  const [transcribing, setTranscribing] = useState(false); // Para controlar si se está transcribiendo
+  const [isRecording, setIsRecording] = useState(false); // Para controlar si se está grabando audio
+  const [recordedBlobURL, setRecordedBlobURL] = useState(null); // Para almacenar la URL del audio grabado
 
   // Efecto que se ejecuta cuando cambia el estado 'transcribing'
   useEffect(() => {
@@ -58,15 +58,25 @@ function App() {
     setRecordedBlobURL(recordedBlob.blobURL);
   };
 
+  // Renderiza la interfaz de usuario de la aplicación
   return (
     <div className="App">
       <h1>Texto Transcrito</h1>
       {/* Muestra la transcripción de audio */}
       <p>{transcript}</p>
       {/* Botón para iniciar la transcripción */}
-      <button onClick={handleTranscribeClick} disabled={transcribing || isRecording}>
-        {transcribing ? 'Transcribiendo...' : 'Iniciar Transcripción'}
-      </button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleTranscribeClick}
+        disabled={transcribing || isRecording}
+      >
+        {transcribing ? (
+          <CircularProgress size={24} color="inherit" />
+        ) : (
+          'Iniciar Transcripción'
+        )}
+      </Button>
 
       <h2>Grabador de Audio</h2>
       {/* Componente de grabación de audio */}
@@ -77,14 +87,24 @@ function App() {
       />
       <div className="record-controls">
         {/* Botón para iniciar la grabación */}
-        <button onClick={handleStartRecording} disabled={isRecording}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleStartRecording}
+          disabled={isRecording}
+        >
           {isRecording ? 'Grabando...' : 'Iniciar Grabación'}
-        </button>
+        </Button>
         {/* Botón para detener la grabación (aparece solo durante la grabación) */}
         {isRecording && (
-          <button onClick={handleStopRecording} className="stop-button">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleStopRecording}
+            className="stop-button"
+          >
             Detener Grabación
-          </button>
+          </Button>
         )}
       </div>
 

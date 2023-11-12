@@ -30,7 +30,7 @@ const SpeechToText = () => {
 
   const translateText = async (text, targetLanguage) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/translate_${targetLanguage}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/my_app/translate_${targetLanguage}/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ const SpeechToText = () => {
             <div className="mdc-card__primary-action" tabIndex="0">
               <div className="mdc-card__ripple"></div>
               <div className="mdc-card__content">
-                <h2>Traducido</h2>
+                <h2>Traducción</h2>
                 <div>{translatedText}</div>
               </div>
             </div>

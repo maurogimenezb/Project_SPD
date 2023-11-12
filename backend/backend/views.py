@@ -1,38 +1,95 @@
-# Importa las clases necesarias desde los módulos de Django y Google Cloud Speech-to-Text
+# backend/views.py
+import json
 from django.http import JsonResponse
-from google.cloud import speech_v1p1beta1 as speech
+from django.views.decorators.csrf import csrf_exempt
+from google.cloud import translate_v2 as translate
 
-# Define una función llamada test_speech_to_text que toma un objeto 'request' de Django como argumento.
-def test_speech_to_text(request):
-    # Configura el cliente de Google Cloud Speech-to-Text con las credenciales
-    credentials_dict = {
-###
-    }
+@csrf_exempt
+def translation_en(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            texto_a_traducir = data.get('text', '')
+            
+            # Credenciales de la cuenta de servicio
+            credenciales = {
+            }
 
-    # Crea una instancia del cliente de Speech-to-Text utilizando las credenciales
-    client = speech.SpeechClient.from_service_account_info(credentials_dict)
+            # Inicializar el cliente de traducción
+            cliente_traduccion = translate.Client.from_service_account_info(credenciales)
 
-    # URL del archivo de audio en Google Cloud Storage
-    audio_file_uri = "gs://mis-audiosmg97py/audioprueba5.wav"
+            # Llamar a la API para realizar la traducción
+            resultado_traduccion = cliente_traduccion.translate(
+                texto_a_traducir,
+                target_language='en'  # Código de idioma de destino
+            )
 
-    # Configura la solicitud de transcripción
-    audio = {"uri": audio_file_uri}
-    config = {
-        # Formato de codificación de audio
-        "encoding": speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        # Frecuencia de muestreo en hercios (Hz) del audio
-        "sample_rate_hertz": 44100, 
-        # Código de idioma para la transcripción (en este caso, inglés estadounidense)
-        "language_code": "en-US",
-    }
+            # Extraer el texto traducido del resultado
+            texto_traducido = resultado_traduccion['translatedText']
 
-    # Realiza la solicitud de transcripción al servicio de Google Cloud Speech-to-Text
-    response = client.recognize(config=config, audio=audio)
+            # Devolver el resultado como JSON
+            return JsonResponse({"texto_original": texto_a_traducir, "texto_traducido": texto_traducido})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
-    # Procesa la respuesta para obtener el texto transcribido
-    transcript = ""
-    for result in response.results:
-        transcript += result.alternatives[0].transcript
+    return JsonResponse({"error": "Método no permitido"}, status=405)
 
-    # Retorna el texto transcribido como una respuesta JSON
-    return JsonResponse({"transcript": transcript})
+@csrf_exempt
+def translation_it(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            texto_a_traducir = data.get('text', '')
+            
+            # Credenciales de la cuenta de servicio
+            credenciales = {
+            }
+
+            # Inicializar el cliente de traducción
+            cliente_traduccion = translate.Client.from_service_account_info(credenciales)
+
+            # Llamar a la API para realizar la traducción
+            resultado_traduccion = cliente_traduccion.translate(
+                texto_a_traducir,
+                target_language='it'  # Código de idioma de destino
+            )
+
+            # Extraer el texto traducido del resultado
+            texto_traducido = resultado_traduccion['translatedText']
+
+            # Devolver el resultado como JSON
+            return JsonResponse({"texto_original": texto_a_traducir, "texto_traducido": texto_traducido})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
+@csrf_exempt
+def translation_pt(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            texto_a_traducir = data.get('text', '')
+            
+            # Credenciales de la cuenta de servicio
+            credenciales = {
+            }
+
+            # Inicializar el cliente de traducción
+            cliente_traduccion = translate.Client.from_service_account_info(credenciales)
+
+            # Llamar a la API para realizar la traducción
+            resultado_traduccion = cliente_traduccion.translate(
+                texto_a_traducir,
+                target_language='pt'  # Código de idioma de destino
+            )
+
+            # Extraer el texto traducido del resultado
+            texto_traducido = resultado_traduccion['translatedText']
+
+            # Devolver el resultado como JSON
+            return JsonResponse({"texto_original": texto_a_traducir, "texto_traducido": texto_traducido})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)

@@ -1,6 +1,11 @@
 from django.urls import path
-from . import views
+from .views import translation_en
+from .views import translation_it
+from .views import translation_pt
+
 
 urlpatterns = [
-    path('test-speech-to-text/', views.test_speech_to_text, name='test-speech-to-text'),
+    path('translate_en/', translation_en, name='translation_en'),
+    path('translate_it/', translation_it, name='translation_it'),
+    path('translate_pt/', translation_pt, name='translation_pt'),
 ]

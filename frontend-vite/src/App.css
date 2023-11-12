@@ -1,0 +1,38 @@
+.mdc-fab__ripple {
+  background-color: #F77D24; /* orange */
+  
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  background-color: #212121; /* dark gray */
+  
+  
+}
+
+.navbar-btn {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.navbar-btn:hover {
+  background-color: #212121;
+}
+
+.mdc-card {
+  display: flex;
+  justify-content: center; /* Horizontally centers the cards */
+  align-items: center; /* Vertically centers the cards */
+}
+
+.containerStyle {
+  display: flex;
+  justify-content: center; /* Horizontally centers the cards */
+  align-items: flex-end; /* Vertically centers the cards */
+}

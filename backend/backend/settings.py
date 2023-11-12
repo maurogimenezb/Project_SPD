@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +28,8 @@ SECRET_KEY = 'django-insecure-_eq=09mhz-5ik49xz!^j#=7f6_616ws+r*$y3qa5s!d5upw1s(
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+GOOGLE_TRANSLATE_API_KEY = "AIzaSyCVhMmbkpYbCnowhLdWMCInpefmz9TRenk"
 
 
 # Application definition
@@ -134,5 +138,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Se agrego por conflictos de política de seguridad de origen que bloquea la 
 #solicitud debido a diferencias en el origen (origen cruzado).
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
+    "http://localhost:5173",  # URL de tu aplicación React
+    # O puedes permitir todas las solicitudes (en desarrollo):
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
+

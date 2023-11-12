@@ -25,6 +25,9 @@ const Navbar = () => {
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400&display=swap');
+          .mdc-icon-button:focus {
+            outline: none; // Evitar el resaltado al seleccionar un botón
+          }
         `}
       </style>
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
@@ -56,7 +59,7 @@ const Navbar = () => {
                 style={{
                   color: '#ffffff',
                   fontFamily: 'Work Sans, sans-serif',
-                  marginLeft: '8px', // Ajusta el espacio a la izquierda del título
+                  marginLeft: '8px',
                 }}
               >
                 Ñe'ëmbohasa Web

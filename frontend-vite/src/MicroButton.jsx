@@ -1,23 +1,28 @@
 // MicroButton.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MDCRipple } from '@material/ripple';
 import '@material/fab/dist/mdc.fab.css';
 
 const MicroButton = ({ onClick, isRecording }) => {
   const [originalButtonStyle, setOriginalButtonStyle] = useState(null);
+  const fabRef = useRef(null);
 
   useEffect(() => {
-    const fabRipple = new MDCRipple(document.querySelector('.mdc-fab'));
-    return () => {
-      fabRipple.destroy();
-    };
-  }, []);
+    if (fabRef.current) {
+      const fabRipple = new MDCRipple(fabRef.current);
+      return () => {
+        fabRipple.destroy();
+      };
+    }
+  }, [fabRef]);
 
   useEffect(() => {
-    if (isRecording) {
-      setOriginalButtonStyle(document.querySelector('.mdc-fab').style);
-    } else {
-      setOriginalButtonStyle(null);
+    if (fabRef.current) {
+      if (isRecording) {
+        setOriginalButtonStyle(fabRef.current.style);
+      } else {
+        setOriginalButtonStyle(null);
+      }
     }
   }, [isRecording]);
 
@@ -26,23 +31,26 @@ const MicroButton = ({ onClick, isRecording }) => {
   };
 
   const iconStyle = {
-    color: '#000000',
+    color: isRecording ? '#FF0000' : '#000000',
   };
+
+  const icon = isRecording ? 'graphic_eq' : 'mic_none';
+  const graphicEqColor = isRecording ? '#FFFFFF' : '';
 
   return (
     <button
+      ref={fabRef}
       className={`mdc-fab ${isRecording ? 'mdc-fab--recording' : ''}`}
       aria-label="Microphone"
       onClick={onClick}
       style={buttonStyle}
     >
       <div className="mdc-fab__ripple"></div>
-      <span className="material-icons" style={iconStyle}>
-        mic
+      <span className="material-icons" style={{ ...iconStyle, color: icon === 'graphic_eq' ? graphicEqColor : iconStyle.color }}>
+        {icon}
       </span>
     </button>
   );
 };
 
 export default MicroButton;
-

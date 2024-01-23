@@ -2,8 +2,28 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 import json
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from google.cloud import translate_v2 as translate
+import speech_recognition as sr
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+@csrf_exempt
+@require_POST
+def transcripcion_view(request):
+    try:
+        audio_file = request.FILES['audio']
+
+        recognizer = sr.Recognizer()
+
+        with sr.AudioFile(audio_file) as source:
+            audio_data = recognizer.record(source)
+
+        text = recognizer.recognize_google(audio_data, language="es-ES")
+
+        return JsonResponse({'transcription': text})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 @csrf_exempt
 def translation_en(request):
@@ -14,7 +34,8 @@ def translation_en(request):
             
             # Credenciales de la cuenta de servicio
             credenciales = {
-            }
+
+}
 
             # Inicializar el cliente de traducción
             cliente_traduccion = translate.Client.from_service_account_info(credenciales)

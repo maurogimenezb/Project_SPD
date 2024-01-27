@@ -32,6 +32,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  flex-direction: column; /* Añade esta línea para que los elementos se centren verticalmente */
+
 }
 
 h1 {

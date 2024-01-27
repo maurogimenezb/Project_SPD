@@ -1,3 +1,5 @@
+// ... (código anterior)
+
 import React, { useEffect, useState } from 'react';
 import { MDCTopAppBar } from '@material/top-app-bar';
 import '@material/top-app-bar/dist/mdc.top-app-bar.css';
@@ -5,6 +7,7 @@ import NavigationDrawer from './NavigationDrawer';
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   useEffect(() => {
     const topAppBarElement = document.querySelector('.mdc-top-app-bar');
@@ -18,6 +21,10 @@ const Navbar = () => {
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
     console.log('Drawer is now:', isDrawerOpen ? 'Open' : 'Closed');
+  };
+
+  const toggleInfo = () => {
+    setIsInfoOpen(!isInfoOpen);
   };
 
   return (
@@ -68,23 +75,44 @@ const Navbar = () => {
             <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
               <button
                 className="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                aria-label="Search"
+                aria-label="Information"
                 style={{ color: '#b4c1cc' }}
+                onClick={toggleInfo}
               >
-                search
-              </button>
-              <button
-                className="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                aria-label="Options"
-                style={{ color: '#b4c1cc' }}
-              >
-                more_vert
+                info
               </button>
             </section>
           </div>
         </header>
 
         <NavigationDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+
+        {isInfoOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              padding: '20px',
+              backgroundColor: '#fff',
+              borderRadius: '8px',
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+              border: '2px solid #000',  // Bordes de color negro
+              zIndex: 2000,
+            }}
+          >
+            {/* Contenido del cuadro de información rápida */}
+            <h3>Información Rápida</h3>
+            <p>Creado por: Mauro Gimenez</p>
+            <p>Estudiante de Ingeniería en Informática</p>
+            <p>Universidad Católica - Campus Guairá</p>
+            <p>Año 2024</p>
+            <button onClick={toggleInfo} style={{ color: '#fff' }}>
+              Cerrar
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

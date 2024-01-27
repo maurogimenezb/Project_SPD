@@ -1,5 +1,11 @@
+# En tu models.py
+
 from django.db import models
 
-class CustomUser(models.Model):
-    username = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=50)
+class Transcripcion_New(models.Model):
+    texto = models.TextField()
+    traduccion = models.TextField()  # Agrega este campo
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Transcripción - {self.fecha_creacion}'

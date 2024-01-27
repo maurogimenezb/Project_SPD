@@ -1,14 +1,13 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-import json
+# En tu views.py
+
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Transcripcion_New
+import json
 from google.cloud import translate_v2 as translate
 import speech_recognition as sr
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
 
 @csrf_exempt
-@require_POST
 def transcripcion_view(request):
     try:
         audio_file = request.FILES['audio']
@@ -35,7 +34,8 @@ def translation_en(request):
             # Credenciales de la cuenta de servicio
             credenciales = {
 
-}
+  }
+
 
             # Inicializar el cliente de traducción
             cliente_traduccion = translate.Client.from_service_account_info(credenciales)
@@ -65,7 +65,7 @@ def translation_it(request):
             
             # Credenciales de la cuenta de servicio
             credenciales = {
-            }
+}
 
             # Inicializar el cliente de traducción
             cliente_traduccion = translate.Client.from_service_account_info(credenciales)
@@ -95,7 +95,7 @@ def translation_pt(request):
             
             # Credenciales de la cuenta de servicio
             credenciales = {
-            }
+}
 
             # Inicializar el cliente de traducción
             cliente_traduccion = translate.Client.from_service_account_info(credenciales)
@@ -115,18 +115,29 @@ def translation_pt(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
-def login_view(request):
-    print("Entrando en la vista de inicio de sesión...")
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            return render(request, 'login.html', {'error': 'Credenciales inválidas'})
-    return render(request, 'login.html')
 
-def home(request):
-    return render(request, 'home.html')
+
+# En tu views.py
+
+@csrf_exempt
+def guardar_transcripcion(request):
+    if request.method == 'POST':
+        transcripcion_texto = request.POST.get('transcripcion_texto', '')
+        traduccion_texto = request.POST.get('traduccion_texto', '')
+        nueva_transcripcion = Transcripcion_New(texto=transcripcion_texto, traduccion=traduccion_texto)
+        nueva_transcripcion.save()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
+
+
+def obtener_historial(request):
+    historial = Transcripcion_New.objects.all().values()
+    return JsonResponse(list(historial), safe=False)
+
+@csrf_exempt
+def limpiar_historial(request):
+    if request.method == 'DELETE':
+        # Lógica para limpiar el historial (eliminación de registros en la base de datos)
+        Transcripcion_New.objects.all().delete()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=405)
